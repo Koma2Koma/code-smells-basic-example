@@ -44,5 +44,4 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
-gem 'this_is_not_a_real_Gem '
 
