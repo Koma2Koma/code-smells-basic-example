@@ -1,4 +1,14 @@
 <p id="notice"><%= notice %></p>
 
+<h1><%= @owner.first_name %></h1>
+
+<h2>My Cats are...</h2>
+
+<% @cats.each do |cat| %>
+  <h3><%= cat.name %></h3>
+<% end %>
+
+<%= link_to 'Add a New Cat', new_cat_path %>
+<br>
 <%= link_to 'Edit', edit_owner_path(@owner) %> |
 <%= link_to 'Back', owners_path %>

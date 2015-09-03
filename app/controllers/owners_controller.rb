@@ -4,18 +4,20 @@ class OwnersController < ApplicationController
   end
 
   def show
-    @onr = nil
-    @onr = Owner.find(params[:id])
-    return @onr if @onr
+    @owner = nil
+    @owner = Owner.find(params[:id])
+    @cats = @owner.cats
+    return @owner if @owner
   end
 
   def update
+    # binding.pry
     @owner = Owner.find_by(id: params[:id])
     if @owner.update(owner_params)
-      # redirect_to owners_path, success: "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was updated successfully"
+      redirect_to owners_path, success: "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was updated successfully"
     else
       flash[:error] = "Owner with name #{params[:owner][:first_name]} #{params[:owner][:last_name]} was not created successfully"
-      # render 'edit'
+      render 'edit'
     end
   end
 
@@ -34,7 +36,7 @@ class OwnersController < ApplicationController
   end
   
   def edit
-    @owner = Owner.find_by(name: params[:name])
+    @owner = Owner.find(params[:id])
   end
 
   def destroy
@@ -42,12 +44,13 @@ class OwnersController < ApplicationController
     message = nil
     success_message = ""
     error_message = ''
-    @onr = Owner.find(r)
+    @onr = Owner.find(p)
+    # binding.pry
     if @onr && @onr.persisted? && p
       #destroy all my cats
-      @onr.cats.each do |cat|
-        cat.destroy
-      end
+      # @onr.cats.each do |cat|
+      #   cat.destroy
+      # end
       if @onr.destroy
         success_message = "owner destroyed" 
         flash[:success] = success_message
@@ -56,7 +59,7 @@ class OwnersController < ApplicationController
     else
       error_message = "owner not destroyed because something happened with #{params[:id]}"
       flash[:error] = error_message
-      # redirect_to owners_path
+      redirect_to owners_path
     end 
   end
 
