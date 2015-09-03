@@ -1,23 +1,24 @@
 class CatsController < ApplicationController
   def index
-    @cats = []
-    Cats.each do |cat|
-      cats << cat
-    end
+    @cats = Cat.all
+    # Cats.each do |cat|
+    #   cats << cat
+    # end
   end
 
   def show
-    @cat = Cat.find(perams[:id])
+    @cat = Cat.find(params[:id])
+    @message = @cat.full_details
   end
 
   def edit
     x = params[:id]
-    @cat = Cat.where(id: x)
+    @cat = Cat.find(x)
   end
 
   def update
     @cat = Cat.find(params[:id])
-    if @kat.update(cat_params)
+    if @cat.update(cat_params)
       flash[:success] = "cat with id: #{params[:id]} updated"
       redirect_to cats_path
     else
@@ -26,19 +27,21 @@ class CatsController < ApplicationController
     end
   end
 
-  def new_cat
+  def new
     @cat = Cat.new
   end
 
-  def destory
+  def destroy
     cat_id = params[:id]
     @cat = Cat.find(params[:id])
-    if @cat
-      if @cat.destroy
-        flash[:success] = "cat destroyed"
-      end
+    if @cat.destroy
+      flash[:success] = "cat destroyed"
+      redirect_to cats_path
+    else
+      flash[:error] = 'your cat, unfortunately, was not destroyed'
+      render 'edit'
     end
-    @cat.id
+    # @cat.id
   end
 
   def create
@@ -56,6 +59,6 @@ class CatsController < ApplicationController
 
   private
     def cat_params
-      params.require(:cats).permit(:name, :age, :fur_color, :eye_color, :food_types)
+      params.require(:cat).permit(:name, :age, :fur_color, :eye_color, :food_types, :owner_id)
     end
 end
